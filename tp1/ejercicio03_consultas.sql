@@ -1,10 +1,20 @@
--- =====================================================
--- EJERCICIO 3
--- =====================================================
+-- ============================================================
+-- TP1 | EJERCICIO 03 - Consultas analiticas
+-- Base de datos: tp1_accidentes (MySQL 8)
+-- ============================================================
+-- Objetivo: resolver las 10 consultas pedidas sobre el modelo ya
+--           cargado. Sirven ademas como validacion del esquema.
+-- Previo: ejercicio01_ddl.sql y ejercicio02_dml.sql.
+-- ============================================================
 
 USE tp1_accidentes;
 
--- 1. ¿Qué provincias y tipos de vías no tienen accidentes mortales a 30 días en 2015?
+
+-- ------------------------------------------------------------
+-- Consultas
+-- ------------------------------------------------------------
+
+-- 1. Que provincias y tipos de vias no tienen accidentes mortales a 30 dias en 2015?
 SELECT DISTINCT p.provincia, t.tipo_via
 FROM info_accidente ia
 JOIN provincia p ON ia.id_provincia = p.id_provincia
@@ -13,7 +23,7 @@ WHERE ia.id_anio = 2015
   AND ia.accidentes_mortales_30_dias = 0;
 
 
--- 2. ¿Qué provincias de "Andalucía" tienen más de 25 fallecidos en vías interurbanas en 2014?
+-- 2. Que provincias de "Andalucia" tienen mas de 25 fallecidos en vias interurbanas en 2014?
 SELECT p.provincia, ia.fallecidos
 FROM info_accidente ia
 JOIN provincia p ON ia.id_provincia = p.id_provincia
@@ -25,7 +35,7 @@ WHERE c.ccaa = 'Andalucía'
   AND ia.fallecidos > 25;
 
 
--- 3. ¿Cuál es la Comunidad Autónoma con más accidentes con víctimas en 2015?
+-- 3. Cual es la Comunidad Autonoma con mas accidentes con victimas en 2015?
 SELECT c.ccaa, SUM(ia.accidentes_con_victimas) AS total_accidentes
 FROM info_accidente ia
 JOIN provincia p ON ia.id_provincia = p.id_provincia
@@ -36,14 +46,14 @@ ORDER BY total_accidentes DESC
 LIMIT 1;
 
 
--- 4. ¿Cuál es el número medio de heridos no hospitalizados por año? Redondea el resultado sin decimales.
+-- 4. Cual es el numero medio de heridos no hospitalizados por anio? Redondea el resultado sin decimales.
 SELECT ia.id_anio AS anio,
        ROUND(AVG(ia.heridos_no_hospitalizados)) AS media_heridos_no_hospitalizados
 FROM info_accidente ia
 GROUP BY ia.id_anio;
 
 
--- 5. ¿Cuál es la combinación de año, provincia y tipo de vía con más heridos hospitalizados?
+-- 5. Cual es la combinacion de anio, provincia y tipo de via con mas heridos hospitalizados?
 SELECT ia.id_anio AS anio, p.provincia, t.tipo_via, ia.heridos_hospitalizados
 FROM info_accidente ia
 JOIN provincia p ON ia.id_provincia = p.id_provincia
@@ -52,7 +62,7 @@ ORDER BY ia.heridos_hospitalizados DESC
 LIMIT 1;
 
 
--- 6. ¿Qué Comunidades Autónomas tienen menos de 100 fallecidos en 2014?
+-- 6. Que Comunidades Autonomas tienen menos de 100 fallecidos en 2014?
 SELECT c.ccaa, SUM(ia.fallecidos) AS total_fallecidos
 FROM info_accidente ia
 JOIN provincia p ON ia.id_provincia = p.id_provincia
@@ -62,7 +72,7 @@ GROUP BY c.ccaa
 HAVING SUM(ia.fallecidos) < 100;
 
 
--- 7. ¿Cuál es la provincia que tiene más accidentes con víctimas en vías urbanas en 2015?
+-- 7. Cual es la provincia que tiene mas accidentes con victimas en vias urbanas en 2015?
 SELECT p.provincia, SUM(ia.accidentes_con_victimas) AS total_accidentes
 FROM info_accidente ia
 JOIN provincia p ON ia.id_provincia = p.id_provincia
@@ -81,7 +91,7 @@ WHERE provincia LIKE 'C%'
 ORDER BY provincia DESC;
 
 
--- 9. Ranking con las tres provincias con mayor número de heridos totales (hospitalizados + no hospitalizados) en vías interurbanas en 2015.
+-- 9. Ranking con las tres provincias con mayor numero de heridos totales (hospitalizados + no hospitalizados) en vias interurbanas en 2015.
 SELECT p.provincia,
        SUM(ia.heridos_hospitalizados + ia.heridos_no_hospitalizados) AS heridos_totales
 FROM info_accidente ia
@@ -94,7 +104,7 @@ ORDER BY heridos_totales DESC
 LIMIT 3;
 
 
--- 10. Diferencia entre 2014 y 2015 de la proporción de heridos hospitalizados y no hospitalizados de la Comunidad Autónoma de "Asturias" en vías interurbanas.
+-- 10. Diferencia entre 2014 y 2015 de la proporcion de heridos hospitalizados y no hospitalizados de la Comunidad Autonoma de "Asturias" en vias interurbanas.
 WITH datos_asturias AS (
     SELECT ia.id_anio AS anio,
            SUM(ia.heridos_hospitalizados) AS hosp,
