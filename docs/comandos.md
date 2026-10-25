@@ -82,13 +82,13 @@ mysql -u root -p"<pass>" --default-character-set=utf8mb4 tp1_accidentes -e "SELE
 | `Get-Content <archivo>.sql -Raw \| mysql ...` | Carga un script por el pipeline de PowerShell (**NO recomendado**: puede degradar la codificación de caracteres) |
 | `mysql ... -e "source <ruta>\<archivo>.sql"` | Ejecuta un script dentro del cliente con `source` (**recomendado**: preserva la codificación UTF-8) |
 
-> **Gotcha de encoding**: los scripts `.sql` de este repo están guardados en **Windows-1252**, no en UTF-8. Si se cargan por el pipeline de PowerShell (`Get-Content | mysql`), los caracteres acentuados (Á, í, ó) se convierten en `?`. La forma robusta es cargarlos con `source` dentro del cliente MySQL con `--default-character-set=utf8mb4`, o convertirlos previamente a UTF-8.
+> **Gotcha de encoding**: los scripts `.sql` de este repo están guardados en **UTF-8 sin BOM** con finales de línea CRLF. Si se cargan por el pipeline de PowerShell (`Get-Content | mysql`), los caracteres acentuados (Á, í, ó) pueden convertirse en `?`. La forma robusta es cargarlos con `source` dentro del cliente MySQL con `--default-character-set=utf8mb4`.
 
 ### Orden de carga recomendado
 
 ```bash
-mysql -u root -p"<pass>" tp1_accidentes -e "source E:\Repo\DBA\tp1\ejercicio2_ddl.sql"
-mysql -u root -p"<pass>" tp1_accidentes -e "source E:\Repo\DBA\tp1\ejercicio2_dml.sql"
-mysql -u root -p"<pass>" tp1_accidentes -e "source E:\Repo\DBA\tp1\ejercicio1.sql"
-mysql -u root -p"<pass>" tp1_accidentes -e "source E:\Repo\DBA\tp1\ejercicio2.sql"
+mysql -u root -p"<pass>" tp1_accidentes -e "source E:\Repo\DBA\tp1\ejercicio02_aux_staging_ddl.sql"
+mysql -u root -p"<pass>" tp1_accidentes -e "source E:\Repo\DBA\tp1\ejercicio02_aux_staging_dml.sql"
+mysql -u root -p"<pass>" tp1_accidentes -e "source E:\Repo\DBA\tp1\ejercicio01_ddl.sql"
+mysql -u root -p"<pass>" tp1_accidentes -e "source E:\Repo\DBA\tp1\ejercicio02_dml.sql"
 ```
