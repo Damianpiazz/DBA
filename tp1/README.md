@@ -10,11 +10,11 @@ Datos de accidentes con víctimas por Comunidad Autónoma, provincia y tipo de v
 
 | Archivo | Propósito |
 |---|---|
-| `ejercicio1.sql` | DDL — crea la base de datos normalizada (5 tablas) |
-| `ejercicio2.sql` | DML — pobla las tablas normalizadas desde la staging table |
-| `ejercicio3.sql` | Queries — 10 consultas analíticas sobre los datos |
-| `ejercicio2_ddl.sql` | DDL auxiliar — estructura de la tabla `accidentes` (staging) |
-| `ejercicio2_dml.sql` | DML auxiliar — datos crudos INSERT por fila |
+| `ejercicio01_ddl.sql` | DDL — crea la base de datos normalizada (5 tablas) |
+| `ejercicio02_dml.sql` | DML — pobla las tablas normalizadas desde la staging table |
+| `ejercicio03_consultas.sql` | Queries — 10 consultas analíticas sobre los datos |
+| `ejercicio02_aux_staging_ddl.sql` | DDL auxiliar — estructura de la tabla `accidentes` (staging) |
+| `ejercicio02_aux_staging_dml.sql` | DML auxiliar — datos crudos INSERT por fila |
 | `datos_accidentes.xlsx` | Dataset original en Excel |
 
 Se aplicó **normalización 3NF**: cada dimensión (CCAA, provincia, tipo de vía, año) está en su propia tabla, y la tabla de hechos (`info_accidente`) las referencia por foreign keys.
@@ -46,17 +46,17 @@ El esquema resultante:
 
 ```sql
 -- 1. Crear la staging table y cargar datos
-SOURCE ejercicio2_ddl.sql;
-SOURCE ejercicio2_dml.sql;
+SOURCE ejercicio02_aux_staging_ddl.sql;
+SOURCE ejercicio02_aux_staging_dml.sql;
 
 -- 2. Crear el esquema normalizado
-SOURCE ejercicio1.sql;
+SOURCE ejercicio01_ddl.sql;
 
 -- 3. Poblar las tablas normalizadas
-SOURCE ejercicio2.sql;
+SOURCE ejercicio02_dml.sql;
 
 -- 4. Correr las queries
-SOURCE ejercicio3.sql;
+SOURCE ejercicio03_consultas.sql;
 ```
 
 ## Queries del ejercicio 3
