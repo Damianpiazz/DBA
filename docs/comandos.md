@@ -4,10 +4,36 @@ Listado y explicación de los comandos usados para gestionar MySQL y consultar l
 
 ## Índice
 
+- [Levantar con Docker](#levantar-con-docker)
 - [Servicio de MySQL](#servicio-de-mysql)
 - [Cliente MySQL](#cliente-mysql)
 - [Inspección de tablas](#inspección-de-tablas)
 - [Carga de datos](#carga-de-datos)
+
+---
+
+## Levantar con Docker
+
+Levanta MySQL 8.0 y CloudBeaver (panel web) usando Docker Compose.
+
+| Comando | Descripción |
+|---|---|
+| `docker compose up -d` | Levanta los servicios en segundo plano |
+| `docker compose ps` | Muestra el estado (esperar `healthy` en `mysql`) |
+| `docker compose down` | Detiene los contenedores y conserva los datos |
+| `docker compose down -v` | Detiene y borra los volúmenes (pierde todas las bases) |
+| `docker compose logs -f mysql` | Sigue los logs de MySQL en tiempo real |
+
+### Datos de conexión
+
+| Servicio | Dónde | Credenciales |
+|---|---|---|
+| MySQL | `localhost:3306` | usuario `root`, contraseña `root` |
+| CloudBeaver | `http://localhost:8978` | admin por defecto `cbadmin` / `cloudbeaver` |
+
+> La contraseña de root se define en el archivo `.env` (copiar `.env.example` y ajustar). Si no existe `.env`, se usa `root`.
+
+> Al crear la conexión en CloudBeaver usá host **`mysql`** (el nombre del servicio dentro de la red de Compose), puerto `3306` y usuario `root`. `localhost` desde el navegador apunta al propio contenedor de CloudBeaver, no al de MySQL.
 
 ---
 
