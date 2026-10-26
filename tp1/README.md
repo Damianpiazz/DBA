@@ -45,12 +45,12 @@ El esquema resultante:
 ## Cómo ejecutar
 
 ```sql
--- 1. Crear la staging table y cargar datos
+-- 1. Crear la base de datos y el esquema normalizado
+SOURCE ejercicio01_ddl.sql;
+
+-- 2. Crear la staging table y cargar datos
 SOURCE ejercicio02_aux_staging_ddl.sql;
 SOURCE ejercicio02_aux_staging_dml.sql;
-
--- 2. Crear el esquema normalizado
-SOURCE ejercicio01_ddl.sql;
 
 -- 3. Poblar las tablas normalizadas
 SOURCE ejercicio02_dml.sql;
@@ -58,6 +58,8 @@ SOURCE ejercicio02_dml.sql;
 -- 4. Correr las queries
 SOURCE ejercicio03_consultas.sql;
 ```
+
+> `ejercicio01_ddl.sql` va **primero** porque es el único con `CREATE DATABASE`. Los dos archivos `aux_staging` no tienen `USE`, por lo que fallan con `ERROR 1046: No database selected` si se ejecutan antes de que exista la base.
 
 ## Queries del ejercicio 3
 
